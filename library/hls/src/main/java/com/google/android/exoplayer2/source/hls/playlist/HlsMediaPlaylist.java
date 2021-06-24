@@ -429,6 +429,10 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
    * if undefined.
    */
   public final long partTargetDurationUs;
+
+  /** Whether the playlist contains the #EXT-X-CUE-OUT:DURATION tag. */
+  public final int cueOutDuration;
+
   /** Whether the playlist contains the #EXT-X-ENDLIST tag. */
   public final boolean hasEndTag;
   /**
@@ -487,6 +491,7 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
       int version,
       long targetDurationUs,
       long partTargetDurationUs,
+      int cueOutDuration,
       boolean hasIndependentSegments,
       boolean hasEndTag,
       boolean hasProgramDateTime,
@@ -504,6 +509,7 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
     this.version = version;
     this.targetDurationUs = targetDurationUs;
     this.partTargetDurationUs = partTargetDurationUs;
+    this.cueOutDuration = cueOutDuration;
     this.hasEndTag = hasEndTag;
     this.hasProgramDateTime = hasProgramDateTime;
     this.protectionSchemes = protectionSchemes;
@@ -582,6 +588,7 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
         version,
         targetDurationUs,
         partTargetDurationUs,
+        cueOutDuration,
         hasIndependentSegments,
         hasEndTag,
         hasProgramDateTime,
@@ -612,6 +619,7 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
         version,
         targetDurationUs,
         partTargetDurationUs,
+        cueOutDuration,
         hasIndependentSegments,
         /* hasEndTag= */ true,
         hasProgramDateTime,

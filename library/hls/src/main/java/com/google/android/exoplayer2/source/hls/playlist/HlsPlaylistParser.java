@@ -103,6 +103,7 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
   private static final String TAG_SKIP = "#EXT-X-SKIP";
   private static final String TAG_PRELOAD_HINT = "#EXT-X-PRELOAD-HINT";
   private static final String TAG_RENDITION_REPORT = "#EXT-X-RENDITION-REPORT";
+  private static final String TAG_CUE_OUT = "#EXT-X-CUE-OUT"; // Define CUE_OUT tag
 
   private static final String TYPE_AUDIO = "AUDIO";
   private static final String TYPE_VIDEO = "VIDEO";
@@ -141,6 +142,8 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
   private static final Pattern REGEX_FRAME_RATE = Pattern.compile("FRAME-RATE=([\\d\\.]+)\\b");
   private static final Pattern REGEX_TARGET_DURATION = Pattern.compile(TAG_TARGET_DURATION
       + ":(\\d+)\\b");
+  private static final Pattern REGEX_CUE_OUT = Pattern.compile(TAG_CUE_OUT
+      + ":DURATION=(\\d+)\\b");
   private static final Pattern REGEX_ATTR_DURATION = Pattern.compile("DURATION=([\\d\\.]+)\\b");
   private static final Pattern REGEX_PART_TARGET_DURATION =
       Pattern.compile("PART-TARGET=([\\d\\.]+)\\b");
@@ -641,6 +644,7 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
     boolean hasDiscontinuitySequence = false;
     int playlistDiscontinuitySequence = 0;
     int relativeDiscontinuitySequence = 0;
+    int cueOutDuration = 0;
     long playlistStartTimeUs = 0;
     long segmentStartTimeUs = 0;
     long segmentByteRangeOffset = 0;
@@ -831,6 +835,8 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
               C.msToUs(Util.parseXsDateTime(line.substring(line.indexOf(':') + 1)));
           playlistStartTimeUs = programDatetimeUs - segmentStartTimeUs;
         }
+      } else if (line.equals(TAG_CUE_OUT)) {
+        cueOutDuration = parseIntAttr(line, REGEX_CUE_OUT);
       } else if (line.equals(TAG_GAP)) {
         hasGapTag = true;
       } else if (line.equals(TAG_INDEPENDENT_SEGMENTS)) {
@@ -1022,6 +1028,7 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
         version,
         targetDurationUs,
         partTargetDurationUs,
+        cueOutDuration,
         hasIndependentSegmentsTag,
         hasEndTag,
         /* hasProgramDateTime= */ playlistStartTimeUs != 0,
