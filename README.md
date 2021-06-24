@@ -1,3 +1,4 @@
+
 # ExoPlayer <img src="https://img.shields.io/github/v/release/google/ExoPlayer.svg?label=latest"/> #
 
 ExoPlayer is an application level media player for Android. It provides an
@@ -133,3 +134,6 @@ implementation project(':exoplayer-library-ui')
 
 To develop ExoPlayer using Android Studio, simply open the ExoPlayer project in
 the root directory of the repository.
+
+# APlayer
+Cusomization Exoplayer by adding CUE_OUT tag
